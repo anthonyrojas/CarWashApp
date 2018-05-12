@@ -1,8 +1,28 @@
+const fs = require('fs');
+const serverConfig = {
+    key: fs.readFileSync(__dirname + '/keys/key.pem'),
+    cert: fs.readFileSync(__dirname + '/keys/cert.pem'),
+    requestCert: true,
+    rejectUnauthorized: false
+}
+const bodyParser = require('body-parser');
+const helmet = require('helmet');
+const routes = require('./routes');
+const csrf = require('csurf');
+const logger = require('morgan');
 const express = require('express');
 const app = express();
-const server = require('http').createServer(app);
 //var io = require('socket.io').listen(server);
-server.listen(3000 || process.env.PORT);
+//const server = require('https').createServer(serverConfig,app);
+const server = require('http').createServer(app);
+//const server = require('http2').createSecureServer(http2Config, app);
+app.set('trust proxy', '127.0.0.1');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(helmet());
+app.disable('x-powered-by');
+app.use(logger('dev'));
+routes(app);
 app.get('*', function(req, res, next) {
     var err = new Error('Invalid path. Page not found.');
     err.status = 404;
@@ -15,4 +35,7 @@ app.use((err, req, res, next)=>{
     }else{
         res.status(500).json({message: 'Oops! Something went wrong'});
     }
+});
+server.listen(3000, ()=>{
+    console.log('Listening on port' + server.address().port);
 });

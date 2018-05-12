@@ -9,14 +9,16 @@
   "author": "Anthony",
   "license": "MIT",
   "dependencies": {
+    "axios": "*",
+    "body-parser": "*",
+    "csurf": "*",
     "express": "^4.16.3",
+    "helmet": "*",
+    "jsonwebtoken": "*",
+    "mongoose": "*",
+    "morgan": "^1.9.0",
     "socket.io": "^2.1.0",
     "stripe": "^5.8.0",
-    "body-parser": "*",
-    "jsonwebtoken": "*",
-    "axios": "*",
-    "mongoose": "*",
-    "helmet": "*",
-    "csurf": "*"
+    "twilio": "^3.16.0"
   }
 }

@@ -1,0 +1,1 @@
+const USState = require('../models/USState');
