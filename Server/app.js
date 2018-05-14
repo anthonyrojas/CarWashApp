@@ -1,16 +1,20 @@
 const fs = require('fs');
-const serverConfig = {
-    key: fs.readFileSync(__dirname + '/keys/key.pem'),
-    cert: fs.readFileSync(__dirname + '/keys/cert.pem'),
-    requestCert: true,
-    rejectUnauthorized: false
-}
+const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const routes = require('./routes');
 const csrf = require('csurf');
 const logger = require('morgan');
 const express = require('express');
+const serverConfig = {
+    key: fs.readFileSync(__dirname + '/keys/key.pem'),
+    cert: fs.readFileSync(__dirname + '/keys/cert.pem'),
+    requestCert: true,
+    rejectUnauthorized: false
+}
+const config = require('./config');
+mongoose.Promise = global.Promise;
+mongoose.connect(config.DBHOST);
 const app = express();
 //var io = require('socket.io').listen(server);
 //const server = require('https').createServer(serverConfig,app);
@@ -36,6 +40,7 @@ app.use((err, req, res, next)=>{
         res.status(500).json({message: 'Oops! Something went wrong'});
     }
 });
+const initializeStates = require('./controllers/initStatesController').setStates();
 server.listen(3000, ()=>{
     console.log('Listening on port' + server.address().port);
 });

@@ -29,7 +29,7 @@ const LocationSchema = new Schema({
     },
     employees: {
         type: [Schema.Types.ObjectId],
-        ref: 'User',
+        ref: 'User'
     }
 });
 module.exports = mongoose.model('Location', LocationSchema);
