@@ -10,6 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "axios": "*",
+    "bcrypt": "^2.0.1",
     "body-parser": "*",
     "csurf": "*",
     "express": "^4.16.3",
