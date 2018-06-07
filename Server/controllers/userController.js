@@ -24,8 +24,9 @@ exports.register = (req, res)=>{
     if(!req.body.username){
         res.status(400).json({message: 'You must enter a username.'});
     }
-    const username = req.body.username.toLowerCase();
-    username = username.trim();
+    if(req.body.username.contains(' ')){
+        res.status(400).json({message: 'A username cannot contain whitespaces.'})
+    }
     if(username.length > config.USERNAME_MAX_LENGTH || username.length < config.USERNAME_MIN_LENGTH || /\s/.test(username)){
         res.status(400).json({message: `Invalid username. Username must be between ${config.PASSWORD_MIN_LENGTH} and ${config.PASSWORD_MAX_LENGTH} characters and cannot contain whitespace.`});
     }
@@ -40,6 +41,7 @@ exports.register = (req, res)=>{
     }).catch(dbErr =>{
         res.status(500).json({message: 'Unable to create user at this time.'});
     });
+    const username = req.body.username;
     const email = req.body.email;
     const phone = req.body.phone;
     const firstName = req.body.firstName;
