@@ -1,3 +1,3 @@
 # Car Wash App
 
-A network designed to facilitate the flow of operations for car washes that would provide a better, more modern experience to customers.
+A app and small network designed to facilitate the flow of operations for a car wash. It would provide a better, more modern experience to customers.

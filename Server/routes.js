@@ -21,12 +21,12 @@ module.exports = (app)=>{
     //create a menu for a location
     apiRoutes.post('/:location/menu', authController.loginRequired, locationController.isLocationOwner, menuController.createMenu);
     //update a location's menu, namely its employee discount
-    apiRoutes.put('/:location/menu');
+    apiRoutes.put('/:location/menu', authController.loginRequired, locationController.isLocationOwner, menuController.updateMenu);
     //add an item to the menu of a location
     apiRoutes.post('/:location/menu/item', authController.loginRequired, locationController.isLocationOwner, menuController.addMenuItem);
     //remove an item from a menu of a location
     apiRoutes.delete('/:location/menu/:item');
     //update a menu item from a location
-    apiRoutes.put('/:location/menu/:item');
+    apiRoutes.put('/:location/menu/:item', authController.loginRequired, locationController.isLocationOwner, menuController.updateMenuItem);
     app.use('/api', apiRoutes);
 }

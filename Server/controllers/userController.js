@@ -72,46 +72,6 @@ exports.register = (req, res)=>{
             }
         });
     });
-    /*if(req.body.userStatus){
-        var newUser = new User({
-            email: email,
-            phone: phone,
-            firstName: firstName,
-            lastName: lastName,
-            password: password,
-            username: username,
-            userStatus: req.body.userStatus
-        });
-        newUser.save((err, saved)=>{
-            if(err){
-                res.status(500).json({message: 'Unable to save user.'});
-            }else if(!saved){
-                res.status(500).json({message: 'Unable to save user.'});
-            }else{
-                saved.password = undefined;
-                res.status(200).json({user: saved});
-            }
-        });
-    }else{
-        var newUser = new User({
-            email: email,
-            phone: phone,
-            firstName: firstName,
-            lastName: lastName,
-            password: password,
-            username: username
-        });
-        newUser.save((err, saved)=>{
-            if(err){
-                res.status(500).json({message: 'Unable to save user.'});
-            }else if(!saved){
-                res.status(500).json({message: 'Unable to save user.'});
-            }else{
-                saved.password = undefined;
-                res.status(200).json({user: saved});
-            }
-        });
-    }*/
 }
 exports.getUserInfo = (req, res, next)=>{
     User.findOne({username: res.locals.username}).then(userFound => {
