@@ -159,10 +159,60 @@ exports.isLocationOwner = (req, res, next)=>{
             const owners = [...locationFound.owners];
             for(var i=0; i < owners.length; i++){
                 if(owners[i].username === res.locals.username){
+                    res.locals.location = locationFound;
                     next();
                 }
             }
             res.status(400).json({message: 'You are not an owner of this location.'});
+        }
+    });
+}
+exports.addLocationOwner = (req, res)=>{
+    if(!req.body.username){
+        res.status(400).json({message: 'You must specify the username of the person you wish to add as an owner.'});
+    }
+    let username = req.body.username.trim();
+    User.findOneAndUpdate({username: username}, {$set:{userStatus: 'Owner'}}, {new: true}, (err,updatedUser)=>{
+        if(err){
+            res.status(500).json({message: 'Error. Unable to add user as an owner at this time.'});
+        }
+        if(updatedUser){
+            let currLocation = res.locals.location;
+            let locationOwners = currLocation.owners;
+            locationOwners.push(updatedUser);
+            Location.updateOne({_id: currLocation._id}, {owners: locationOwners}, (err, updatedLocation)=>{
+                if(err){
+                    res.status(500).json({message: 'Unable to update the location owners at this time. Please try again later.'});
+                }
+                if(updatedLocation){
+                    res.status(200).json({message: 'Succesfully updated location owners!'});
+                }
+                res.status(500).json({message: 'Unable to update location at this time. Please try again later.'});
+            });
+        }
+        res.status(404).json({message: 'Could not find user with that username.'});
+    })
+}
+exports.leaveAsOwner = (req, res)=>{
+    let location = res.locals.location;
+    User.findOneAndUpdate({username: res.locals.username}, {$set:{userStatus: 'User'}}, {new: true}, (err, updatedUser)=>{
+        if(err){
+            res.status(500).json({message: 'Unable to remove you as an owner. Please try again.'});
+        }
+        if(updatedUser){
+            let locationOwners = location.owners;
+            if(locationOwners.length <= 1){
+                res.status(400).json({message: 'Cannot leave as owner when you are the only owner of this location.'});
+            }
+            let updatedOwners = locationOwners.filter((owner)=>{
+                return owner._id != updatedUser._id;
+            });
+            Location.updateOne({_id: location._id}, {owners: updatedOwners}, (err, updatedLocation)=>{
+                if(err){
+                    res.status(500).json({message: 'Cannot leave and update this locations\'s owners at this tine. Please try again later.'});
+                }
+                res.status(200).json({message: 'Location successfully updated and you are no longer an owner of this location.'});
+            });
         }
     });
 }
