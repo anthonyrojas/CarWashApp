@@ -28,5 +28,7 @@ module.exports = (app)=>{
     apiRoutes.delete('/:location/menu/:item');
     //update a menu item from a location
     apiRoutes.put('/:location/menu/:item', authController.loginRequired, locationController.isLocationOwner, menuController.updateMenuItem);
+    //leave as the owner of a location
+    apiRoutes.post('/:location/owner', authController.loginRequired, locationController.isLocationOwner, locationController.leaveAsOwner);
     app.use('/api', apiRoutes);
 }
