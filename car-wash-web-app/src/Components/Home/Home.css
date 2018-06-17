@@ -1,0 +1,8 @@
+.home-content{
+    /*margin: 1em 0;*/
+    padding: 0 0.5em;
+}
+.stylized-paper{
+    background: linear-gradient(to bottom right, rgba(132, 255, 136, 0.7), rgba(81,174,255,0.7));
+    padding: 0.5em;
+}

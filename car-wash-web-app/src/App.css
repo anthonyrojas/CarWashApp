@@ -20,6 +20,9 @@
 .Padded-Col{
   padding: 1em 0.5em;
 }
+.centered-text {
+  text-align: center;
+}
 
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
