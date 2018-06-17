@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react';
 import {AppBar, Toolbar, IconButton, Typography, MuiThemeProvider, createMuiTheme, Drawer, List, ListItem, ListItemText} from '@material-ui/core';
 import {connect} from 'react-redux';
 import MenuIcon from '@material-ui/icons/Menu';
+import {toggleSidenav} from '../../Actions/Nav';
 
 class Navbar extends PureComponent{
     render(){
@@ -18,9 +19,11 @@ class Navbar extends PureComponent{
                 <MuiThemeProvider theme={theme}>
                     <AppBar position='fixed' color='primary'>
                         <Toolbar>
-                            <IconButton>
-                                <MenuIcon />
-                            </IconButton>
+                            <span onClick={this.props.toggleSidenav}>
+                                <IconButton>
+                                    <MenuIcon />
+                                </IconButton>
+                            </span>
                             <Typography variant='title'>
                                 Car Wash App
                             </Typography>
@@ -31,4 +34,9 @@ class Navbar extends PureComponent{
         );
     }
 }
-export default Navbar;
+const mapStateToProps = state =>({
+    showSidenav: state.sidenav.showSidenav
+});
+export default connect(mapStateToProps, {
+    toggleSidenav
+})(Navbar)

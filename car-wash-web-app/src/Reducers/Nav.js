@@ -11,7 +11,7 @@ export default (state=initialState, action)=>{
     switch(action.type){
         case TOGGLE_NAV: 
             return{
-                showSidenav: action.payload
+                showSidenav: !state.showSidenav
             }
         default: 
             return state;
