@@ -1,5 +1,7 @@
 import {combineReducers} from 'redux';
 import SideNav from './Nav';
+import Contact from './Contact';
 export default combineReducers({
-    sidenav: SideNav
+    sidenav: SideNav,
+    contact: Contact
 });

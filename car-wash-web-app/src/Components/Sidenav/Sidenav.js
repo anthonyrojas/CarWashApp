@@ -12,7 +12,7 @@ class Sidenav extends PureComponent{
             <div>
                 <Drawer open={this.props.showSidenav} onClose={this.props.toggleSidenav}>
                     <List>
-                        <Link to='/'>
+                        <Link to='/' className='route-link' onClick={this.props.toggleSidenav}>
                         <ListItem button>
                             <ListItemText primary='Home' />
                         </ListItem>
@@ -20,7 +20,7 @@ class Sidenav extends PureComponent{
                         <ListItem button>
                             <ListItemText primary='Login' />
                         </ListItem>
-                        <Link to='/about'>
+                        <Link to='/about' className='route-link' onClick={this.props.toggleSidenav}>
                         <ListItem button>
                             <ListItemText primary='About' />
                         </ListItem>

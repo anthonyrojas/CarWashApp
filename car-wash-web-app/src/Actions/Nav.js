@@ -1,6 +1,4 @@
 import {
-    SHOW_NAV,
-    HIDE_NAV,
     TOGGLE_NAV
 } from './types';
 

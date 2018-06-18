@@ -1,7 +1,6 @@
 import React,{Component} from 'react';
 import "./Home.css";
 import {Grid, Paper, withStyles, Typography} from '@material-ui/core';
-import PropTypes from 'prop-types';
 import Parallax from '../../Commons/Parallax/Parallax';
 const styles = ({
     colorPrimary: {
@@ -9,7 +8,7 @@ const styles = ({
     },
     bannerRow:{
         minHeight: '100vh',
-        backgroundImage: `url(${require('./Assets/carwash-main-banner.jpg')})`,
+        backgroundImage: `url(${require('../../Assets/carwash-main-banner.jpg')})`,
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center'

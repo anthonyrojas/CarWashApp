@@ -20,8 +20,14 @@
 .Padded-Col{
   padding: 1em 0.5em;
 }
+.Padded-Paper{
+  padding: 1em 0.5em;
+}
 .centered-text {
   text-align: center;
+}
+.route-link{
+  text-decoration: none;
 }
 
 @keyframes App-logo-spin {
