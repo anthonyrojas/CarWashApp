@@ -1,12 +1,16 @@
 import React, { PureComponent } from 'react';
 import {connect} from 'react-redux';
-import {Grid, Paper, withStyles, Typography, TextField, Button} from '@material-ui/core';
+import {Grid, Paper, withStyles, Typography, TextField, Button, Snackbar} from '@material-ui/core';
 import {
     contactFormEmailChanged,
     contactFormFirstNameChanged,
     contactFormLastNameChanged,
     contactFormMessageChanged,
-    contactFormSubjectChanged
+    contactFormSubjectChanged,
+    sendEmailAttempt,
+    sendEmailSuccess,
+    sendEmailFailure,
+    resetEmailStatuses
 } from '../../Actions';
 const styles = ({
     colorPrimary: {
@@ -41,6 +45,17 @@ class About extends PureComponent{
     }
     onContactFormSubmit(e){
         e.preventDefault();
+        let data = {
+            email: this.props.email,
+            subject: this.props.subject,
+            firstName: this.props.firstName,
+            lastName: this.props.lastName,
+            emailMessage: this.props.emailMessage
+        }
+        this.props.sendEmailAttempt(data);
+    }
+    closeNotification(e){
+        this.props.resetEmailStatuses(false);
     }
     render(){
         return(
@@ -82,6 +97,32 @@ class About extends PureComponent{
                 alignItems='center'
                 spacing={24}
                 >
+                    <Snackbar 
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right'
+                    }}
+                    open={this.props.sendingEmailErr}
+                    autoHideDuration={3000}
+                    onClose={this.closeNotification.bind(this)}
+                    ContentProps={{
+                      'aria-describedby': 'message-id',
+                    }}
+                    message={<span id="message-id">Unable to send email!</span>}
+                    />
+                    <Snackbar 
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right'
+                    }}
+                    open={this.props.sendingEmailSuccess}
+                    autoHideDuration={3000}
+                    onClose={this.closeNotification.bind(this)}
+                    ContentProps={{
+                      'aria-describedby': 'message-id',
+                    }}
+                    message={<span id="message-id">Email successfully sent!</span>}
+                    />
                     <Grid item xs={12} lg={10}>
                         <Paper className='Padded-Paper'>
                             <Grid container direction='row' justify='center' alignContent='center' alignItems='center' component='form' method='POST' spacing={32}>
@@ -96,6 +137,9 @@ class About extends PureComponent{
                                     align='center'
                                     value={this.props.email}
                                     onChange={this.onEmailChanged.bind(this)}
+                                    helperText={this.props.emailErr}
+                                    error={this.props.emailErr !== '' && this.props.emailErr !== undefined && this.props.emailErr !== null}
+                                    disabled={this.props.sendingEmail}
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={10} md={5}>
@@ -107,6 +151,9 @@ class About extends PureComponent{
                                     align='center'
                                     value={this.props.subject}
                                     onChange={this.onEmailSubjectChanged.bind(this)}
+                                    helperText={this.props.subjectErr}
+                                    error={this.props.subjectErr !== '' && this.props.subjectErr !== undefined && this.props.subjectErr !== null}
+                                    disabled={this.props.sendingEmail}
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={10} md={5}>
@@ -118,6 +165,9 @@ class About extends PureComponent{
                                     align='center'
                                     value={this.props.firstName}
                                     onChange={this.onFirstNameChanged.bind(this)}
+                                    helperText={this.props.firstNameErr}
+                                    error={this.props.firstNameErr !== '' && this.props.firstNameErr !== undefined && this.props.firstNameErr !== null}
+                                    disabled={this.props.sendingEmail}
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={10} md={5}>
@@ -129,6 +179,9 @@ class About extends PureComponent{
                                     align='center'
                                     value={this.props.lastName}
                                     onChange={this.onLastNameChanged.bind(this)}
+                                    helperText={this.props.lastNameErr}
+                                    error={this.props.lastNameErr !== '' && this.props.lastNameErr !== undefined && this.props.lastNameErr !== null}
+                                    disabled={this.props.sendingEmail}
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={10}>
@@ -141,6 +194,9 @@ class About extends PureComponent{
                                     multiline={true}
                                     value={this.props.emailMessage}
                                     onChange={this.onEmailMessageChanged.bind(this)}
+                                    helperText={this.props.emailMessageErr}
+                                    error={this.props.emailMessageErr !== '' && this.props.emailMessageErr !== undefined && this.props.emailMessageErr !== null}
+                                    disabled={this.props.sendingEmail}
                                     />
                                 </Grid>
                                 <Grid container direction='column' alignContent='center' alignItems='center' justify='center'>
@@ -162,12 +218,24 @@ const mapStateToProps = state =>({
     firstName: state.contact.firstName,
     lastName: state.contact.lastName,
     subject: state.contact.subject,
-    emailMessage: state.contact.emailMessage
+    emailMessage: state.contact.emailMessage,
+    sendingEmail: state.contact.sendingEmail,
+    sendingEmailErr: state.contact.sendingEmailErr,
+    sendingEmailSuccess: state.contact.sendingEmailSuccess,
+    emailErr: state.contact.emailErr,
+    firstNameErr: state.contact.firstNameErr,
+    lastNameErr: state.contact.lastNameErr,
+    subjectErr: state.contact.subjectErr,
+    emailMessageErr: state.contact.emailMessageErr
 });
 export default connect(mapStateToProps, {
     contactFormEmailChanged,
     contactFormFirstNameChanged,
     contactFormLastNameChanged,
     contactFormSubjectChanged,
-    contactFormMessageChanged
+    contactFormMessageChanged,
+    sendEmailAttempt,
+    sendEmailSuccess,
+    sendEmailFailure,
+    resetEmailStatuses
 })(About);

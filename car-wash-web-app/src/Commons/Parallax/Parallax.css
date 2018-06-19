@@ -3,18 +3,12 @@
     background-position: center;
     background-attachment: fixed;
     background-size: cover;
-    height: 25em;
+    height: 35em;
     width: 100%;
 }
 
 @media screen and (max-width: 768px){
     .parallax{
-        height: 20em;
-    }
-}
-
-@media screen and (max-width: 500px){
-    .parallax{
-        height: 15em;
+        height: 25em;
     }
 }

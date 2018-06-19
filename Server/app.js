@@ -17,13 +17,21 @@ mongoose.Promise = global.Promise;
 mongoose.connect(config.DBHOST);
 const app = express();
 //var io = require('socket.io').listen(server);
-//const server = require('https').createServer(serverConfig,app);
-const server = require('http').createServer(app);
+const server = require('https').createServer(serverConfig,app);
+//const server = require('http').createServer(app);
 //const server = require('http2').createSecureServer(http2Config, app);
 app.set('trust proxy', '127.0.0.1');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(helmet());
+//emable CORS
+app.use((req, res, next)=>{
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Credentials", "true");
+    next();
+});
 app.disable('x-powered-by');
 app.use(logger('dev'));
 routes(app);
@@ -41,6 +49,6 @@ app.use((err, req, res, next)=>{
     }
 });
 const initializeStates = require('./controllers/initStatesController').setStates();
-server.listen(3000, ()=>{
-    console.log('Listening on port' + server.address().port);
+server.listen(config.PORT, ()=>{
+    console.log('Listening on port ' + server.address().port);
 });

@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import "./Home.css";
-import {Grid, Paper, withStyles, Typography} from '@material-ui/core';
+import {Grid, Paper, withStyles, Typography, SvgIcon} from '@material-ui/core';
+import {Build, TrendingUp, SupervisorAccount} from '@material-ui/icons';
 import Parallax from '../../Commons/Parallax/Parallax';
 const styles = ({
     colorPrimary: {
@@ -92,6 +93,42 @@ const home = (props)=>(
                     >
                         <Parallax image={require('./Assets/carwash2.jpg')} />
                     </Grid>
+                </Grid>
+            </Grid>
+            <Grid container
+            spacing={24}
+            direction='row'
+            justify='center'
+            alignContent='center'
+            alignItems='center'
+            wrap='wrap'
+            >
+                <Grid item xs={12} md={10} lg={4}>
+                    <Paper elevation={8} className='stylized-paper'>
+                    <Typography align='center' gutterBottom><SvgIcon color='primary' className='circle-icon-md' style={{fontSize: '4em'}}><Build /></SvgIcon></Typography>
+                    <Typography align='center' variant='title' gutterBottom>Services</Typography>
+                    <Typography align='left' variant='subheading'>
+                    The services provided by this network and app are transactions, order management, and helping your clients be more connected. The transactions are powered by Stripe, which is a service that allows any business to take payments online.
+                    </Typography>
+                    </Paper>
+                </Grid>
+                <Grid item xs={12} md={10} lg={4}>
+                    <Paper elevation={8} className='stylized-paper'>
+                    <Typography align='center' gutterBottom><SvgIcon color='primary' className='circle-icon-md' style={{fontSize: '4em'}}><SupervisorAccount /></SvgIcon></Typography>
+                    <Typography align='center' variant='title' gutterBottom>Join Today</Typography>
+                    <Typography align='left' variant='subheading' gutterBottom>
+                    Joining is very easy! All you have to do is sign up for a Stripe account on the official website <a href="https://dashboard.stripe.com/register">here</a>. They will ask you to enter your payment/account info that you will like to use for your car wash. Then just complete the sign up on this site and you're all set to go!
+                    </Typography>
+                    </Paper>
+                </Grid>
+                <Grid item xs={12} md={10} lg={4}>
+                    <Paper elevation={8} className='stylized-paper'>
+                    <Typography align='center' gutterBottom><SvgIcon color='primary' className='circle-icon-md' style={{fontSize: '4em'}}><TrendingUp /></SvgIcon></Typography>
+                    <Typography align='center' variant='title' gutterBottom>Improve Your Business</Typography>
+                    <Typography align='left' variant='subheading' gutterBottom>
+                    An online presence today is absolutely necessary to become prominent in all markets. The car was business is no different. Signing up here will allow you to expand your business without the need to hire a software developer, thus bringing in more profits than losses.
+                    </Typography>
+                    </Paper>
                 </Grid>
             </Grid>
         </div>

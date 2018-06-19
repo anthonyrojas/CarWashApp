@@ -9,8 +9,10 @@ exports.getLocationInfo = (req, res)=>{
             locationFound.employees = undefined;
             res.status(200).json({message: 'Location information obtained.', location: locationFound});
         }
-        res.status(404).json({message: 'Unable to obtain location information'});
-    }).catch();
+        res.status(404).json({message: 'Unable to obtain location information or location does not exist.'});
+    }).catch(err=>{
+        res.status(500).json({message: err.message});
+    });
 }
 //create a new car wash location
 exports.createLocation = (req, res)=>{

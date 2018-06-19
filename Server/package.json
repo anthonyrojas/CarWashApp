@@ -18,6 +18,7 @@
     "jsonwebtoken": "*",
     "mongoose": "*",
     "morgan": "^1.9.0",
+    "nodemailer": "^4.6.7",
     "socket.io": "^2.1.0",
     "stripe": "^5.8.0",
     "twilio": "^3.16.0"

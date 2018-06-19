@@ -29,7 +29,19 @@
 .route-link{
   text-decoration: none;
 }
-
+.stylized-paper{
+  background-color: #00FFBC; 
+  background: linear-gradient(to bottom right, rgba(132, 255, 136, 1), rgba(81,174,255,1)) !important;
+  padding: 0.5em;
+}
+.circle-icon-md{
+  background-color:aliceblue;
+  color: #000 !important;
+  border-radius: 50%;
+  padding: 8px;
+  margin: 0.2em 0;
+  box-shadow: 1px 0 5px 2px gray;
+}
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }

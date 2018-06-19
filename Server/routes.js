@@ -4,7 +4,12 @@ const authController = require('./controllers/authController');
 const userController = require('./controllers/userController');
 const locationController = require('./controllers/locationController');
 const menuController = require('./controllers/menuController');
+const contactController = require('./controllers/contactController');
 module.exports = (app)=>{
+    const publicRoutes = express.Router();
+    //public contact form that sends an email to the service
+    publicRoutes.post('/mail', contactController.sendMail);
+    app.use('/public', publicRoutes);
     const authRoutes = express.Router();
     //create a new user
     authRoutes.post('/register', userController.register);
