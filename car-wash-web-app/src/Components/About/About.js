@@ -61,35 +61,6 @@ class About extends PureComponent{
         return(
             <div>
                 <Grid container
-                direction='row'
-                wrap='wrap'
-                justify='center'
-                alignContent='center'
-                alignItems='stretch'
-                style={styles.bannerRow}
-                >
-                    <Grid
-                    container
-                    direction='column'
-                    justify='center'
-                    alignContent='stretch'
-                    alignItems='stretch'
-                    style={{background: 'linear-gradient(45deg, rgba(255,171,0,0.5), rgba(230,0,255,0.5))'}}
-                    >
-                        <Typography
-                        variant='display4'
-                        gutterBottom
-                        align='center'
-                        style={{
-                            color: 'white',
-
-                        }}
-                        >
-                            Car Wash App
-                        </Typography>
-                    </Grid>
-                </Grid>
-                <Grid container
                 wrap='wrap'
                 direction='row'
                 justify='center'
