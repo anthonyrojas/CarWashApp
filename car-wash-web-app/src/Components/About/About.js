@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import {connect} from 'react-redux';
-import {Grid, Paper, withStyles, Typography, TextField, Button, Snackbar} from '@material-ui/core';
+import {Grid, Paper, withStyles, Typography, TextField, Button, Snackbar, MuiThemeProvider, createMuiTheme} from '@material-ui/core';
 import {
     contactFormEmailChanged,
     contactFormFirstNameChanged,
@@ -95,7 +95,7 @@ class About extends PureComponent{
                     message={<span id="message-id">Email successfully sent!</span>}
                     />
                     <Grid item xs={12} lg={10}>
-                        <Paper className='Padded-Paper'>
+                        <Paper className='Padded-Paper Stylized-Form-Paper'>
                             <Grid container direction='row' justify='center' alignContent='center' alignItems='center' component='form' method='POST' spacing={32}>
                                 <Grid item xs={12}><Typography variant='title' align='center'>Contact Us</Typography></Grid>
                                 <Grid item xs={12} sm={10} md={5}>

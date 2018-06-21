@@ -42,6 +42,10 @@
   margin: 0.2em 0;
   box-shadow: 1px 0 5px 2px gray;
 }
+.Stylized-Form-Paper{
+  background: linear-gradient(to bottom,#C8C5FF, #FFC5FB) !important;
+  background-color: #C8C5FF;
+}
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }

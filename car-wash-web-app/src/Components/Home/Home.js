@@ -1,4 +1,4 @@
-import React,{Component} from 'react';
+import React from 'react';
 import "./Home.css";
 import {Grid, Paper, withStyles, Typography, SvgIcon} from '@material-ui/core';
 import {Build, TrendingUp, SupervisorAccount} from '@material-ui/icons';

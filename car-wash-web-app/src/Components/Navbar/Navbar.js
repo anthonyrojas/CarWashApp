@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {AppBar, Toolbar, IconButton, Typography, MuiThemeProvider, createMuiTheme, Drawer, List, ListItem, ListItemText} from '@material-ui/core';
+import {AppBar, Toolbar, IconButton, Typography, MuiThemeProvider, createMuiTheme} from '@material-ui/core';
 import {connect} from 'react-redux';
 import MenuIcon from '@material-ui/icons/Menu';
 import {toggleSidenav} from '../../Actions/Nav';

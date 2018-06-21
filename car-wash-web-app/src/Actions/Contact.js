@@ -100,13 +100,13 @@ export const sendEmailAttempt = (data)=>{
             sendEmailFailure(dispatch, errorMsgs);
         }else{
             let httpData={
-                email: data.email,
-                subject: data.subject,
-                firstName: data.firstName,
-                lastName: data.lastName,
+                email: data.email.trim(),
+                subject: data.subject.trim(),
+                firstName: data.firstName.trim(),
+                lastName: data.lastName.trim(),
                 emailMessage: data.emailMessage
             };
-            axios.post(`${host}/public/mail`, data).then(res=>{
+            axios.post(`${host}/public/mail`, httpData).then(res=>{
                 if(!res){
                     sendEmailFailure(dispatch, {
                         email: EMPTY_STR,
