@@ -41,9 +41,8 @@ app.get('*', function(req, res, next) {
     next(err);
 });
 app.use((err, req, res, next)=>{
-    if(err.message){
-        res.status(err.status);
-        res.json({message: err.message});
+    if(err.message && err.status){
+        res.status(err.status).json({message: err.message});
     }else{
         res.status(500).json({message: 'Oops! Something went wrong'});
     }
