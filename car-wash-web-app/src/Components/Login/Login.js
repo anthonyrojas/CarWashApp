@@ -6,7 +6,14 @@ class Login extends PureComponent{
     render(){
         return(
             <div>
-                <Grid></Grid>
+                <Grid container
+                direction='row'
+                alignContent='center'
+                alignItems='center'
+                justify='center'
+                wrap='wrap'
+                spacing={24}
+                ></Grid>
             </div>
         );
     }

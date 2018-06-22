@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import {connect} from 'react-redux';
-import {Grid, Paper, withStyles, Typography, TextField, Button, Snackbar, MuiThemeProvider, createMuiTheme} from '@material-ui/core';
+import {Grid, Paper,Typography, TextField, Button, Snackbar} from '@material-ui/core';
 import {
     contactFormEmailChanged,
     contactFormFirstNameChanged,

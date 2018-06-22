@@ -82,7 +82,7 @@ export const userRegisterAttempt = (data)=>{
     return(dispatch)=>{
         dispatch({
             type: USER_REGISTER_ATTEMPT,
-            payload: data
+            payload: true
         });
         let errorExists = false;
         let errorMsgs = {};
@@ -159,6 +159,7 @@ export const userRegisterAttempt = (data)=>{
                 }
                 userRegisterSuccess(dispatch, successData);
             }).catch(err=>{
+                console.log(err);
                 let failData = {
                     errorMsgs: {
                         username: EMPTY_STR,
@@ -170,7 +171,7 @@ export const userRegisterAttempt = (data)=>{
                         confirmPassword: EMPTY_STR
                     },
                     errorExists: true,
-                    statusMessage: `${err.message}`
+                    statusMessage: `${err.response.data.message}`
                 }
                 userRegisterFailure(dispatch, failData);
             });
@@ -231,7 +232,7 @@ export const userLoginAttempt = (data)=>{
                         username: EMPTY_STR,
                         password: EMPTY_STR
                     },
-                    statusMessage: err.message
+                    statusMessage: err.response.data.message
                 };
                 userLoginFailure(dispatch, failData);
             });

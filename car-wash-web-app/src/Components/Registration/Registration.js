@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react';
-import {Input, TextField, InputLabel, Button, Grid, Typography, Paper} from '@material-ui/core'; 
+import { TextField, Button, Grid, Typography, Paper, FormControlLabel, Checkbox, Modal, CircularProgress, Snackbar} from '@material-ui/core'; 
 import {connect} from 'react-redux';
 import {
     userFormConfirmPasswordChanged,
@@ -17,25 +17,41 @@ import {
 import { EMPTY_STR } from '../../constants';
 class Registration extends PureComponent{
     onUsernameChanged(e){
-        userFormUsernameChanged(e.target.value);
+        this.props.userFormUsernameChanged(e.target.value);
     }
     onPhoneChanged(e){
-        userFormPhoneChanged(e.target.value);
+        this.props.userFormPhoneChanged(e.target.value);
     }
     onEmailChanged(e){
-        userFormEmailChanged(e.target.value);
+        this.props.userFormEmailChanged(e.target.value);
     }
     onFirstNameChanged(e){
-        userFormFirstNameChanged(e.target.value);
+        this.props.userFormFirstNameChanged(e.target.value);
     }
     onLastNameChanged(e){
-        userFormLastNameChanged(e.target.value);
+        this.props.userFormLastNameChanged(e.target.value);
     }
     onPasswordChanged(e){
-        userFormPasswordChanged(e.target.value);
+        this.props.userFormPasswordChanged(e.target.value);
     }
     onConfirmPasswordChanged(e){
-        userFormConfirmPasswordChanged(e.target.value);
+        this.props.userFormConfirmPasswordChanged(e.target.value);
+    }
+    onTogglePasswordVisibility(e){
+        this.props.togglePasswordVisibility(!this.props.showPassword);
+    }
+    onFormSubmit(e){
+        e.preventDefault();
+        let data = {
+            email: this.props.email,
+            username: this.props.username,
+            phone: this.props.phone,
+            firstName: this.props.firstName,
+            lastName: this.props.lastName,
+            password: this.props.password,
+            confirmPassword: this.props.confirmPassword
+        }
+        this.props.userRegisterAttempt(data);
     }
     render(){
         return(
@@ -49,6 +65,17 @@ class Registration extends PureComponent{
                 spacing={24}
                 >
                     <Grid item xs={12} md={10}>
+                        <Snackbar
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right'
+                        }}
+                        open={this.props.errorExists}
+                        ContentProps={{
+                            'aria-describedby': 'status-message'
+                        }}
+                        message={<span id='status-message'>{this.props.statusMessage}</span>}
+                        />
                         <Paper className='Padded-Paper Stylized-Form-Paper'>
                             <Grid container 
                             direction='row' 
@@ -59,6 +86,17 @@ class Registration extends PureComponent{
                             wrap='wrap'
                             component='form'
                             method='POST'>
+                            <Modal open={this.props.attemptingRegistration} className='Stylized-Modal'>
+                                <div>
+                                    <Typography variant='title' align='center'>
+                                        Registration In Progress
+                                    </Typography>
+                                    <Typography variant='subheading' align='center'>
+                                        Please standby while we finish signing you up.
+                                    </Typography>
+                                    <CircularProgress size={100} align='center' />
+                                </div>
+                            </Modal>
                                 <Grid item xs={12}>
                                     <Typography variant='display1' align='center' gutterBottom>
                                         Register
@@ -145,7 +183,7 @@ class Registration extends PureComponent{
                                 </Grid>
                                 <Grid item xs={12} sm={10}>
                                     <TextField id='password-input'
-                                    type='password'
+                                    type={this.props.showPassword ? 'text' : 'password'}
                                     required={true}
                                     label='Password'
                                     fullWidth
@@ -158,7 +196,7 @@ class Registration extends PureComponent{
                                 </Grid>
                                 <Grid item xs={12} sm={10}>
                                     <TextField id='confirm-password-input'
-                                    type='password'
+                                    type={this.props.showPassword ? 'text' : 'password'}
                                     required={true}
                                     label='Confirm Password'
                                     fullWidth
@@ -168,10 +206,33 @@ class Registration extends PureComponent{
                                     helperText={this.props.confirmPasswordErr}
                                     onChange={this.onConfirmPasswordChanged.bind(this)}
                                     />
+                                    {this.props.password !== this.props.confirmPassword && this.props.password !== EMPTY_STR && this.props.confirmPassword !== EMPTY_STR ? <Typography variant='caption' color='secondary'>Your passwords do not match.</Typography> : null}
+                                </Grid>
+                                <Grid item xs={12} sm={10}>
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox 
+                                                checked={this.props.showPassword}
+                                                value='passwordVisibility'
+                                                color='primary'
+                                                onChange={this.onTogglePasswordVisibility.bind(this)}
+                                            />
+                                        }
+                                        label='Show Password'
+                                    />
                                 </Grid>
                                 <Grid container direction='column' alignContent='center' alignItems='center' justify='center'>
                                     <Grid item xs={12}>
-                                    <span><Button variant='contained' color='primary' type='submit' value='Submit'>Submit</Button></span>
+                                    <span onClick={this.onFormSubmit.bind(this)}>
+                                        <Button variant='contained' 
+                                        color='primary' 
+                                        type='submit'
+                                        value='Submit' 
+                                        disabled={this.props.password===EMPTY_STR || this.props.username === EMPTY_STR || this.props.email === EMPTY_STR || this.props.firstName === EMPTY_STR || this.props.lastName === EMPTY_STR || this.props.confirmPassword === EMPTY_STR || this.props.phone === EMPTY_STR || this.props.attemptingRegistration}>
+                                            Submit
+                                        </Button>
+                                        {this.props.password===EMPTY_STR || this.props.username === EMPTY_STR || this.props.email === EMPTY_STR || this.props.firstName === EMPTY_STR || this.props.lastName === EMPTY_STR || this.props.confirmPassword === EMPTY_STR || this.props.phone === EMPTY_STR ? <Typography variant='caption' color='secondary'>You must fill out all required fields.</Typography> : null}
+                                    </span>
                                     <br/><br/>
                                     </Grid>
                                 </Grid>
@@ -186,6 +247,7 @@ class Registration extends PureComponent{
 const mapStateToProps = state=>({
     username: state.user.username,
     email: state.user.email,
+    phone: state.user.phone,
     firstName: state.user.firstName,
     lastName: state.user.lastName,
     password: state.user.password,
@@ -202,7 +264,7 @@ const mapStateToProps = state=>({
     attemptingRegistration: state.user.attemptingRegistration,
     showPassword: state.user.showPassword
 });
-export default connect(mapStateToProps,{
+export default connect(mapStateToProps, {
     userFormConfirmPasswordChanged,
     userFormEmailChanged,
     userFormFirstNameChanged,

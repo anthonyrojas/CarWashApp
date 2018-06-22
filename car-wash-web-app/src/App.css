@@ -23,6 +23,11 @@
 .Padded-Paper{
   padding: 1em 0.5em;
 }
+.Stylized-Modal{
+  padding: 1em;
+  background: linear-gradient(to bottom, #94FFEE, #E6E6E6) !important;
+  background-color: #E6E6E6;
+}
 .centered-text {
   text-align: center;
 }

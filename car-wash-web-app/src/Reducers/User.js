@@ -16,6 +16,7 @@ import {
 } from '../Actions/types';
 import {EMPTY_STR} from '../constants';
 const initialState = {
+    email: EMPTY_STR,
     username: EMPTY_STR,
     phone: EMPTY_STR,
     firstName: EMPTY_STR,
