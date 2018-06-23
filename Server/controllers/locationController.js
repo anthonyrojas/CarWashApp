@@ -218,3 +218,35 @@ exports.leaveAsOwner = (req, res)=>{
         }
     });
 }
+exports.addLocationEmployee = (req, res)=>{
+    if(!req.body.username){
+        res.status(400).json({message: 'You must specify the username of the user you want to add as your employee here.'});
+    }else{
+        User.findOneAndUpdate({username: req.body.username}, {$set:{userStatus: 'Employee'}}, {new: true}, (err, updatedUser)=>{
+            if(err){
+                res.status(500).json({message: 'Unable to an this employee at this time.'});
+            }
+            if(updatedUser){
+                //found the user and updated it
+                let currentLocation = res.locals.location;
+                let ownerArr = [...currentLocation.owners];
+                ownerArr.push(updatedUser);
+                Location.findOneAndUpdate({_id: res.locals.location._id}, {$set:{owners: ownerArr}}, {new: true}, (err, updatedLocation)=>{
+                    if(err){
+                        res.status(500).json({message: 'Unable to add this employee at this time.'});
+                    }
+                    if(updatedLocation){
+                        res.status(200).json({message: 'Successfully added this location and updated this location!', location: updatedLocation});
+                    }else{
+                        res.status(404).json({message: 'Unable to find and update this location.'});
+                    }
+                });
+            }else{
+                res.status(404).json({message: 'Unable to find a user with this username. If your employee does not have an account, ask them to make one.'});
+            }
+        });
+        User.findOneAndUpdate({username: req.body.username}, {}).then().catch(err=>{
+            res.status(500).json({message: 'Database error. Unable to add this employee at this time.'});
+        });
+    }
+}

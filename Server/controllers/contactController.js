@@ -31,7 +31,7 @@ exports.sendMail = (req, res)=>{
         res.status(400).json({message: 'Unable to send email. You must enter an email message.'});
     }
     let mailOptions = {
-        from:'anthony.emailer@gmail.com',
+        from:config.EMAIL_USER,
         to: 'anthony.emailer@gmail.com',
         subject: req.body.subject,
         html: `<h3>Car Wash App - Email</h3>

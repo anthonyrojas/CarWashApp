@@ -40,5 +40,10 @@ module.exports = (app)=>{
     apiRoutes.put('/:location/menu/:item', authController.loginRequired, locationController.isLocationOwner, menuController.updateMenuItem);
     //leave as the owner of a location
     apiRoutes.post('/:location/owner', authController.loginRequired, locationController.isLocationOwner, locationController.leaveAsOwner);
+    //add an employee to a location
+    apiRoutes.put('/:location/employee', authController.loginRequired, locationController.isLocationOwner, locationController.addLocationEmployee);
     app.use('/api', apiRoutes);
+    //routes for transactions
+    const transactionRoutes = express.Router();
+    app.use('/trans', transactionRoutes);
 }
