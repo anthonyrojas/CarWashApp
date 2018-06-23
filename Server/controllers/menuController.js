@@ -122,3 +122,17 @@ exports.updateMenu = (req, res)=>{
         res.status(500).json({message: 'Unable to find the menu for this location and update the menu. Please try again.'});
     });
 }
+exports.removeMenuItem = (req, res)=>{
+    if(!req.body.item){
+        res.status(400).json({message: 'No menu item specified.'});
+    }
+    MenuItem.findOneAndRemove({_id: req.body.item}).then(itemRemoved=>{
+        if(itemRemoved){
+            res.status(500).json({message: 'Menu item removed.'});
+        }else{
+            res.status(404).json({message: 'Menu item not found and could not be removed at this time. Please try again later.'});
+        }
+    }).catch(err=>{
+        res.status(500).json({message: 'Database error. Unable to delete this item at this time.'});
+    });
+}

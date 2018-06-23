@@ -5,7 +5,12 @@ const userController = require('./controllers/userController');
 const locationController = require('./controllers/locationController');
 const menuController = require('./controllers/menuController');
 const contactController = require('./controllers/contactController');
+const transactionController = require('./controllers/transactionController');
 module.exports = (app)=>{
+    //routes for public web browser, mainly the home page
+    const webRoutes = express.Router();
+    webRoutes.get('', webController.home);
+    app.use('/', webRoutes)
     const publicRoutes = express.Router();
     //public contact form that sends an email to the service
     publicRoutes.post('/mail', contactController.sendMail);
@@ -30,7 +35,7 @@ module.exports = (app)=>{
     //add an item to the menu of a location
     apiRoutes.post('/:location/menu/item', authController.loginRequired, locationController.isLocationOwner, menuController.addMenuItem);
     //remove an item from a menu of a location
-    apiRoutes.delete('/:location/menu/:item');
+    apiRoutes.delete('/:location/menu/:item', authController.loginRequired, locationController.isLocationOwner, menuController.removeMenuItem);
     //update a menu item from a location
     apiRoutes.put('/:location/menu/:item', authController.loginRequired, locationController.isLocationOwner, menuController.updateMenuItem);
     //leave as the owner of a location
