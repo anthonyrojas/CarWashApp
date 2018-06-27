@@ -12,7 +12,8 @@ import {
     USER_REGISTER_ATTEMPT,
     USER_REGISTER_FAILURE,
     USER_REGISTER_SUCCESS,
-    TOGGLE_PASSWORD_VISIBILITY
+    TOGGLE_PASSWORD_VISIBILITY,
+    RESET_STATUS_MESSAGE
 } from '../Actions/types';
 import {EMPTY_STR} from '../constants';
 const initialState = {
@@ -106,6 +107,7 @@ export default (state=initialState, action)=>{
             return{
                 ...state,
                 username: EMPTY_STR,
+                phone: EMPTY_STR,
                 email: EMPTY_STR,
                 firstName: EMPTY_STR,
                 lastName: EMPTY_STR,
@@ -137,6 +139,11 @@ export default (state=initialState, action)=>{
                 statusMessage: action.payload.statusMessage,
                 errorExists: action.payload.errorExists,
                 attemptingLogin: false
+            }
+        case RESET_STATUS_MESSAGE:
+            return{
+                ...state,
+                statusMessage: EMPTY_STR
             }
         default: 
             return state

@@ -11,6 +11,7 @@ import About from './Components/About/About';
 import Footer from './Components/Footer/Footer';
 import Sidenav from './Components/Sidenav/Sidenav';
 import Registration from './Components/Registration/Registration';
+import Login from './Components/Login/Login';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 class App extends Component {
   render() {
@@ -26,6 +27,7 @@ class App extends Component {
                 <Route exact path='/' component={Home} />
                 <Route exact path='/about' component={About} />
                 <Route exact path='/register' component={Registration}/>
+                <Route exact path='/login' component={Login}/>
                 <Route component={ErrorPage}/>
               </Switch>
               <Footer />

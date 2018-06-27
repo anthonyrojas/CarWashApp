@@ -12,7 +12,8 @@ import {
     USER_REGISTER_ATTEMPT,
     USER_REGISTER_FAILURE,
     USER_REGISTER_SUCCESS,
-    TOGGLE_PASSWORD_VISIBILITY
+    TOGGLE_PASSWORD_VISIBILITY,
+    RESET_STATUS_MESSAGE
 } from '../Actions/types';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
@@ -237,5 +238,11 @@ export const userLoginAttempt = (data)=>{
                 userLoginFailure(dispatch, failData);
             });
         }
+    }
+}
+export const resetStatusMessage = (data)=>{
+    return{
+        type: RESET_STATUS_MESSAGE,
+        payload: data
     }
 }

@@ -12,10 +12,14 @@ import {
     userRegisterAttempt,
     userRegisterFailure,
     userRegisterSuccess,
-    togglePasswordVisibility
+    togglePasswordVisibility,
+    resetStatusMessage
 } from '../../Actions';
 import { EMPTY_STR } from '../../constants';
 class Registration extends PureComponent{
+    onCloseSnackbar(e){
+        this.props.resetStatusMessage(EMPTY_STR);
+    }
     onUsernameChanged(e){
         this.props.userFormUsernameChanged(e.target.value);
     }
@@ -56,6 +60,17 @@ class Registration extends PureComponent{
     render(){
         return(
             <div>
+                <Modal open={this.props.attemptingRegistration}>
+                    <div className='Stylized-Modal'>
+                        <Typography variant='title' align='center'>
+                            Registration In Progress
+                        </Typography>
+                        <Typography variant='subheading' align='center'>
+                            Please standby while we finish signing you up.
+                        </Typography>
+                        <CircularProgress size={100} align='center' />
+                    </div>
+                </Modal>
                 <Grid container 
                 wrap='wrap'
                 alignContent='center'
@@ -70,7 +85,9 @@ class Registration extends PureComponent{
                             vertical: 'top',
                             horizontal: 'right'
                         }}
-                        open={this.props.errorExists}
+                        open={this.props.statusMessage !== '' && this.props.statusMessage !== null}
+                        autoHideDuration={4000}
+                        onClose={this.onCloseSnackbar.bind(this)}
                         ContentProps={{
                             'aria-describedby': 'status-message'
                         }}
@@ -86,17 +103,6 @@ class Registration extends PureComponent{
                             wrap='wrap'
                             component='form'
                             method='POST'>
-                            <Modal open={this.props.attemptingRegistration} className='Stylized-Modal'>
-                                <div>
-                                    <Typography variant='title' align='center'>
-                                        Registration In Progress
-                                    </Typography>
-                                    <Typography variant='subheading' align='center'>
-                                        Please standby while we finish signing you up.
-                                    </Typography>
-                                    <CircularProgress size={100} align='center' />
-                                </div>
-                            </Modal>
                                 <Grid item xs={12}>
                                     <Typography variant='display1' align='center' gutterBottom>
                                         Register
@@ -114,6 +120,7 @@ class Registration extends PureComponent{
                                     label='Email'
                                     fullWidth
                                     align='center'
+                                    disabled={this.props.attemptingRegistration}
                                     value={this.props.email}
                                     error={this.props.emailErr !== EMPTY_STR && this.props.emailErr !== null && this.props.emailErr !== undefined}
                                     helperText={this.props.emailErr}
@@ -126,6 +133,7 @@ class Registration extends PureComponent{
                                     label='Phone Number'
                                     fullWidth
                                     align='center'
+                                    disabled={this.props.attemptingRegistration}
                                     value={this.props.phone}
                                     error={this.props.phoneErr !== EMPTY_STR && this.props.phoneErr !== null && this.props.phoneErr !== undefined}
                                     helperText={this.props.phoneErr}
@@ -138,6 +146,7 @@ class Registration extends PureComponent{
                                     label='First Name'
                                     fullWidth
                                     align='center'
+                                    disabled={this.props.attemptingRegistration}
                                     value={this.props.firstName}
                                     error={this.props.firstNameErr !== EMPTY_STR && this.props.firstNameErr !== null && this.props.firstNameErr !== undefined}
                                     helperText={this.props.firstNameErr}
@@ -150,6 +159,7 @@ class Registration extends PureComponent{
                                     label='Last Name'
                                     fullWidth
                                     align='center'
+                                    disabled={this.props.attemptingRegistration}
                                     value={this.props.lastName}
                                     error={this.props.lastNameErr !== EMPTY_STR && this.props.lastNameErr !== null && this.props.lastNameErr !== undefined}
                                     helperText={this.props.lastNameErr}
@@ -175,6 +185,7 @@ class Registration extends PureComponent{
                                     label='Username'
                                     fullWidth
                                     align='center'
+                                    disabled={this.props.attemptingRegistration}
                                     value={this.props.username}
                                     error={this.props.usernameErr !== EMPTY_STR && this.props.usernameErr !== null && this.props.usernameErr !== undefined}
                                     helperText={this.props.usernameErr}
@@ -188,6 +199,7 @@ class Registration extends PureComponent{
                                     label='Password'
                                     fullWidth
                                     align='center'
+                                    disabled={this.props.attemptingRegistration}
                                     value={this.props.password}
                                     error={this.props.passwordErr !== EMPTY_STR && this.props.passwordErr !== null && this.props.passwordErr !== undefined}
                                     helperText={this.props.passwordErr}
@@ -201,6 +213,7 @@ class Registration extends PureComponent{
                                     label='Confirm Password'
                                     fullWidth
                                     align='center'
+                                    disabled={this.props.attemptingRegistration}
                                     value={this.props.confirmPassword}
                                     error={this.props.confirmPasswordErr !== EMPTY_STR && this.props.confirmPasswordErr && this.props.confirmPasswordErr !==undefined}
                                     helperText={this.props.confirmPasswordErr}
@@ -275,5 +288,6 @@ export default connect(mapStateToProps, {
     userRegisterAttempt,
     userRegisterFailure,
     userRegisterSuccess,
-    togglePasswordVisibility
+    togglePasswordVisibility,
+    resetStatusMessage
 })(Registration);

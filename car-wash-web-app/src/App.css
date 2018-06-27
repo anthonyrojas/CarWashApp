@@ -27,6 +27,8 @@
   padding: 1em;
   background: linear-gradient(to bottom, #94FFEE, #E6E6E6) !important;
   background-color: #E6E6E6;
+  text-align: center;
+  margin: auto;
 }
 .centered-text {
   text-align: center;
@@ -50,6 +52,12 @@
 .Stylized-Form-Paper{
   background: linear-gradient(to bottom,#C8C5FF, #FFC5FB) !important;
   background-color: #C8C5FF;
+}
+.black-text{
+  color: black !important;
+}
+.black-text *{
+  color: black !important;
 }
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }

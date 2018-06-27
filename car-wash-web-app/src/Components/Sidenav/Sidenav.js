@@ -13,19 +13,24 @@ class Sidenav extends PureComponent{
                 <Drawer open={this.props.showSidenav} onClose={this.props.toggleSidenav}>
                     <List>
                         <Link to='/' className='route-link' onClick={this.props.toggleSidenav}>
-                        <ListItem button>
-                            <ListItemText primary='Home' />
-                        </ListItem>
+                            <ListItem button>
+                                <ListItemText primary='Home' />
+                            </ListItem>
                         </Link>
                         <Link to='/register' className='route-link' onClick={this.props.toggleSidenav}>
-                        <ListItem button>
-                            <ListItemText primary='Register' />
-                        </ListItem>
+                            <ListItem button>
+                                <ListItemText primary='Register' />
+                            </ListItem>
+                        </Link>
+                        <Link to='/login' className='route-link' onClick={this.props.toggleSidenav}>
+                            <ListItem button>
+                                <ListItemText primary='Login' />
+                            </ListItem>
                         </Link>
                         <Link to='/about' className='route-link' onClick={this.props.toggleSidenav}>
-                        <ListItem button>
-                            <ListItemText primary='About' />
-                        </ListItem>
+                            <ListItem button>
+                                <ListItemText primary='About' />
+                            </ListItem>
                         </Link>
                     </List>
                 </Drawer>
