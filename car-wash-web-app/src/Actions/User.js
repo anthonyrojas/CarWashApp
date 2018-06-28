@@ -13,7 +13,9 @@ import {
     USER_REGISTER_FAILURE,
     USER_REGISTER_SUCCESS,
     TOGGLE_PASSWORD_VISIBILITY,
-    RESET_STATUS_MESSAGE
+    RESET_STATUS_MESSAGE,
+    CHECK_USER_AUTH,
+    SET_USER_AUTH_MESSAGE
 } from '../Actions/types';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
@@ -160,21 +162,37 @@ export const userRegisterAttempt = (data)=>{
                 }
                 userRegisterSuccess(dispatch, successData);
             }).catch(err=>{
-                console.log(err);
-                let failData = {
-                    errorMsgs: {
-                        username: EMPTY_STR,
-                        email: EMPTY_STR,
-                        phone: EMPTY_STR,
-                        firstName: EMPTY_STR,
-                        lastName: EMPTY_STR,
-                        password: EMPTY_STR,
-                        confirmPassword: EMPTY_STR
-                    },
-                    errorExists: true,
-                    statusMessage: `${err.response.data.message}`
+                if(err.response){
+                    let failData = {
+                        errorMsgs: {
+                            username: EMPTY_STR,
+                            email: EMPTY_STR,
+                            phone: EMPTY_STR,
+                            firstName: EMPTY_STR,
+                            lastName: EMPTY_STR,
+                            password: EMPTY_STR,
+                            confirmPassword: EMPTY_STR
+                        },
+                        errorExists: true,
+                        statusMessage: `${err.response.data.message}`
+                    }
+                    userRegisterFailure(dispatch, failData);
+                }else{
+                    let failData = {
+                        errorMsgs: {
+                            username: EMPTY_STR,
+                            email: EMPTY_STR,
+                            phone: EMPTY_STR,
+                            firstName: EMPTY_STR,
+                            lastName: EMPTY_STR,
+                            password: EMPTY_STR,
+                            confirmPassword: EMPTY_STR
+                        },
+                        errorExists: true,
+                        statusMessage: 'Unable to register at this time due to server being down.'
+                    }
+                    userRegisterFailure(dispatch, failData);
                 }
-                userRegisterFailure(dispatch, failData);
             });
         }
     }
@@ -221,21 +239,33 @@ export const userLoginAttempt = (data)=>{
             };
             axios.post(`${host}/auth/login`, axiosData).then(res=>{
                 const cookies = new Cookies();
-                cookies.set('authentication', res.data.token, {path: '/', secure: true, httpOnly: true});
+                cookies.set('authentication', res.data.token, {path: '/'});
                 let successData = {
                     statusMessage: res.data.message
                 };
                 userLoginSuccess(dispatch, successData);
             }).catch(err=>{
-                let failData = {
-                    errorExists: true,
-                    errorMsgs: {
-                        username: EMPTY_STR,
-                        password: EMPTY_STR
-                    },
-                    statusMessage: err.response.data.message
-                };
-                userLoginFailure(dispatch, failData);
+                if(err.response){
+                    let failData = {
+                        errorExists: true,
+                        errorMsgs: {
+                            username: EMPTY_STR,
+                            password: EMPTY_STR
+                        },
+                        statusMessage: err.response.data.message
+                    };
+                    userLoginFailure(dispatch, failData);
+                }else{
+                    let failData={
+                        errorExists: true,
+                        errorMsgs: {
+                            username: EMPTY_STR,
+                            password: EMPTY_STR
+                        },
+                        statusMessage: 'Cannot receive response from server. Service may be unavailable.'
+                    }
+                    userLoginFailure(dispatch, failData);
+                }
             });
         }
     }
@@ -243,6 +273,18 @@ export const userLoginAttempt = (data)=>{
 export const resetStatusMessage = (data)=>{
     return{
         type: RESET_STATUS_MESSAGE,
+        payload: data
+    }
+}
+export const checkUserAuth = (data)=>{
+    return{
+        type: CHECK_USER_AUTH,
+        payload: data
+    }
+}
+export const setUserAuthStatusMessage = (data)=>{
+    return{
+        type: SET_USER_AUTH_MESSAGE,
         payload: data
     }
 }

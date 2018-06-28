@@ -1,4 +1,3 @@
-import React from 'react';
 import {
     TOGGLE_NAV
 } from '../Actions/types';

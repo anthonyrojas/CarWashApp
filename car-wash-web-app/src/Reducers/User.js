@@ -1,3 +1,4 @@
+import Cookies from 'universal-cookie';
 import {
     USER_FORM_CONFIRM_PASSWORD_CHANGED,
     USER_FORM_EMAIL_CHANGED,
@@ -13,9 +14,12 @@ import {
     USER_REGISTER_FAILURE,
     USER_REGISTER_SUCCESS,
     TOGGLE_PASSWORD_VISIBILITY,
-    RESET_STATUS_MESSAGE
+    RESET_STATUS_MESSAGE,
+    CHECK_USER_AUTH,
+    SET_USER_AUTH_MESSAGE
 } from '../Actions/types';
 import {EMPTY_STR} from '../constants';
+const cookies = new Cookies();
 const initialState = {
     email: EMPTY_STR,
     username: EMPTY_STR,
@@ -34,7 +38,8 @@ const initialState = {
     confirmPasswordErr: EMPTY_STR,
     showPassword: false,
     attemptingRegistration: false,
-    attemptingLogin: false
+    attemptingLogin: false,
+    isAuthenticated: cookies.get('authentication') !== null && cookies.get('authentication') !== undefined && cookies.get('authentication') !== EMPTY_STR ? true : false
 };
 export default (state=initialState, action)=>{
     switch(action.type){
@@ -120,7 +125,7 @@ export default (state=initialState, action)=>{
         case USER_LOGIN_ATTEMPT:
             return{
                 ...state,
-                attemptingLogin: action.payload
+                attemptingLogin: true
             }
         case USER_LOGIN_FAILURE:
             return{
@@ -138,12 +143,23 @@ export default (state=initialState, action)=>{
                 password: EMPTY_STR,
                 statusMessage: action.payload.statusMessage,
                 errorExists: action.payload.errorExists,
-                attemptingLogin: false
+                attemptingLogin: false,
+                isAuthenticated: true
             }
         case RESET_STATUS_MESSAGE:
             return{
                 ...state,
                 statusMessage: EMPTY_STR
+            }
+        case CHECK_USER_AUTH:
+            return{
+                ...state,
+                isAuthenticated: action.payload
+            }
+        case SET_USER_AUTH_MESSAGE:
+            return{
+                ...state,
+                statusMessage: action.payload
             }
         default: 
             return state

@@ -12,7 +12,10 @@ import Footer from './Components/Footer/Footer';
 import Sidenav from './Components/Sidenav/Sidenav';
 import Registration from './Components/Registration/Registration';
 import Login from './Components/Login/Login';
+import Dashboard from './Components/UserDash/UserDash';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import ProtectedRoute from './Commons/ProtectedRoute/ProtectedRoute';
+import UserAuthRoute from './Commons/UserAuthRoute/UserAuthRoute';
 class App extends Component {
   render() {
     return (
@@ -26,8 +29,9 @@ class App extends Component {
               <Switch>
                 <Route exact path='/' component={Home} />
                 <Route exact path='/about' component={About} />
-                <Route exact path='/register' component={Registration}/>
-                <Route exact path='/login' component={Login}/>
+                <UserAuthRoute path='/register' component={Registration}/>
+                <UserAuthRoute path='/login' component={Login}/>
+                <ProtectedRoute path='/dashboard' component={Dashboard} />
                 <Route component={ErrorPage}/>
               </Switch>
               <Footer />
@@ -38,5 +42,4 @@ class App extends Component {
     );
   }
 }
-
 export default App;

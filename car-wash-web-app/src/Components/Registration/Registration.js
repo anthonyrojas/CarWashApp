@@ -68,7 +68,7 @@ class Registration extends PureComponent{
                         <Typography variant='subheading' align='center'>
                             Please standby while we finish signing you up.
                         </Typography>
-                        <CircularProgress size={100} align='center' />
+                        <CircularProgress size={80} align='center' />
                     </div>
                 </Modal>
                 <Grid container 
