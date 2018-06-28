@@ -42,6 +42,8 @@ module.exports = (app)=>{
     apiRoutes.post('/:location/owner', authController.loginRequired, locationController.isLocationOwner, locationController.leaveAsOwner);
     //add an employee to a location
     apiRoutes.put('/:location/employee', authController.loginRequired, locationController.isLocationOwner, locationController.addLocationEmployee);
+    //get the user information for the logged in user, would be useful with a dashboard
+    apiRoutes.get('/user', authController.loginRequired, userController.getUserInfo);
     app.use('/api', apiRoutes);
     //routes for transactions
     const transactionRoutes = express.Router();

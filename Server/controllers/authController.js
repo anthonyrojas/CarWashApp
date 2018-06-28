@@ -30,8 +30,8 @@ exports.login = (req, res)=>{
                 }
             });
         }
-    }).then(err=>{
-        res.status(500).json({message: err.message});
+    }).catch(err=>{
+        res.status(500).json({message: 'Unable to login at this time.'});
     });
 }
 exports.loginRequired = (req, res, next)=>{
