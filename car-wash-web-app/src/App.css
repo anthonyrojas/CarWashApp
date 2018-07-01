@@ -67,6 +67,21 @@
 .black-text *{
   color: black !important;
 }
+.white-text{
+  color: white !important;
+}
+.white-text *{
+  color: white !important;
+}
+.Padded-Vertical-1{
+  padding: 2em 0;
+}
+.hr-white-b{
+  color: white !important;
+  border-style: solid;
+  border-color: white;
+  border-radius: 20px;
+}
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }

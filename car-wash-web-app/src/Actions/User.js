@@ -88,7 +88,15 @@ export const userRegisterAttempt = (data)=>{
             payload: true
         });
         let errorExists = false;
-        let errorMsgs = {};
+        let errorMsgs = {
+            username: EMPTY_STR,
+            email: EMPTY_STR,
+            phone: EMPTY_STR,
+            firstName: EMPTY_STR,
+            lastName: EMPTY_STR,
+            password: EMPTY_STR,
+            confirmPassword: EMPTY_STR
+        };
         if(!data.username || data.username.trim() === EMPTY_STR){
             errorExists = true;
             errorMsgs.username = 'You must enter a valid username.';
@@ -216,7 +224,10 @@ export const userLoginAttempt = (data)=>{
             payload: data
         });
         let errorExists = false;
-        let errorMsgs = {};
+        let errorMsgs = {
+            username: EMPTY_STR,
+            password: EMPTY_STR
+        };
         if(!data.username || data.username.trim() === EMPTY_STR){
             errorExists = true;
             errorMsgs.username = 'You must enter your username.';
