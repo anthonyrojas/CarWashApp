@@ -245,8 +245,5 @@ exports.addLocationEmployee = (req, res)=>{
                 res.status(404).json({message: 'Unable to find a user with this username. If your employee does not have an account, ask them to make one.'});
             }
         });
-        User.findOneAndUpdate({username: req.body.username}, {}).then().catch(err=>{
-            res.status(500).json({message: 'Database error. Unable to add this employee at this time.'});
-        });
     }
 }

@@ -34,6 +34,9 @@ const LocationSchema = new Schema({
     employees: {
         type: [Schema.Types.ObjectId],
         ref: 'User'
+    },
+    stipeKey:{
+        type: String
     }
 });
 module.exports = mongoose.model('Location', LocationSchema);

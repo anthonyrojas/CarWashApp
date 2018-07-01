@@ -89,3 +89,43 @@ exports.getUserInfo = (req, res)=>{
         res.status(500).json({message: userDBErr.message});
     });
 }
+exports.updateUserInfo = (req, res)=>{
+    var tester = /^[-!#$%&'*+\/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&'*+\/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-?\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/;
+    if(!req.body.email){
+        res.status(400).json({message: 'Email not provided. Cannot be null or empty'});
+    }
+    else if(req.body.email.trim() === ''){
+        res.status(400).json({message: 'Email not provided. Cannot be null or empty'});
+    }else if(!tester.test(req.body.email.trim())){
+        res.status(400).json({message: 'Invalid email.'});
+    }
+    if(!req.body.phone){
+        res.status(400).json({message: 'Phone not provided. Cannot be null or empty.'});
+    }else if(req.body.phone.trim() === ''){
+        res.status(400).json({message: 'Phone not provided. Cannot be null or empty.'});
+    }
+    if(!req.body.firstName){
+        res.status(400).json({message: 'First name not provided. Cannot be null or empty.'});
+    }
+    if(!req.body.lastName){
+        res.status(400).json({message: 'Last name not provided. Cannot be null or empty.'});
+    }
+    let email = req.body.email.trim();
+    let phone = req.body.phone.trim();
+    let firstName = req.body.firstName.trim();
+    let lastName = req.body.lastName.trim();
+    User.findOneAndUpdate({username: res.locals.username}, {$set:{
+        email: email,
+        phone: phone,
+        firstName: firstName,
+        lastName: lastName
+    }}, {new: true}, (err, updatedUser)=>{
+        if(err){
+            res.status(500).json({message: 'Cannot update your user account information at this time.'});
+        }
+        if(updatedUser){
+            updatedUser.password = undefined;
+            res.status(200).json({message: 'Successfully updated your account information!', userInfo: updatedUser});
+        }
+    });
+}
