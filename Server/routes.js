@@ -22,12 +22,14 @@ module.exports = (app)=>{
     authRoutes.post('/login', authController.login);
     app.use('/auth', authRoutes);
     const apiRoutes = express.Router();
+    //search for location based on address, name, phone, etc.
+    apiRoutes.get('/location/search/:type/:searchVal', locationController.searchLocation);
     //get the public information of a location
     apiRoutes.get('/location/:locationID', locationController.getLocationInfo);
     //get the locations that a person is the owner of
     apiRoutes.get('/owner/locations', authController.loginRequired, locationController.getOwnerLocations);
     //create a new location
-    apiRoutes.post('/location', authController.loginRequired, locationController.createLocation);
+    apiRoutes.post('/location', authController.loginRequired, userController.upgradeToOwnerStatus, locationController.createLocation);
     //create a menu for a location
     apiRoutes.post('/:location/menu', authController.loginRequired, locationController.isLocationOwner, menuController.createMenu);
     //update a location's menu, namely its employee discount

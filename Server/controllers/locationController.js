@@ -2,6 +2,7 @@
 const axios = require('axios');
 const Location = require('../models/Location');
 const User = require('../models/User');
+const State = require('../models/USState');
 exports.getLocationInfo = (req, res)=>{
     Location.findOne({_id: req.params.locationID}).then(locationFound =>{
         if(locationFound){
@@ -16,112 +17,55 @@ exports.getLocationInfo = (req, res)=>{
 }
 //create a new car wash location
 exports.createLocation = (req, res)=>{
-    User.findOne({username: res.locals.username}).then(userFound => {
-        if(!userFound){
-            res.status(403).json({message: 'Unauthorized! Please sign in.'});
-        }else{
-            if(userFound.userStatus === 'Owner'){
-                if(!req.body.title){
-                    res.status(400).json({message: 'You must give your location a name.'});
+    //user owner info stored in res.locals.user
+    if(!req.body.title){
+        return res.status(400).json({message: 'You must give your location a name.'});
+    }
+    if(!req.body.address){
+        return res.status(400).json({message: 'You must enter a street address.'});
+    }
+    if(!req.body.city){
+        return res.status(400).json({message: 'You must provide a city for your location.'});
+    }
+    if(!req.body.zipcode){
+        return res.status(400).json({message: 'You must enter a zip code.'});
+    }else if(req.body.zipcode.toString().length !== 5){
+        return res.status(400).json({messag: 'Invalid zipcode. Your zip code must contain 5 digits.'});
+    }
+    if(!req.body.state){
+        return res.status(400).json({message: 'You must provide a state for your location.'});
+    }
+    if(!req.body.phone){
+        return res.status(400).json({message: 'You must provide a primary phone number for this location.'});
+    }
+    State.findOne({name: req.body.state}).then(stateFound=>{
+        if(stateFound){
+            let owners = [];
+            owners.push(res.locals.user);
+            let newLocation = new Location({
+                title: req.body.title,
+                address: req.body.address,
+                city: req.body.city,
+                state: stateFound,
+                zipcode: req.body.zipcode,
+                phone: req.body.phone,
+                owners: owners
+            });
+            newLocation.save((err, savedLocation)=>{
+                if(err){
+                    return res.status(500).json({message: err.message});
                 }
-                if(!req.body.address){
-                    res.status(400).json({message: 'You must enter a street address.'});
-                }
-                if(!req.body.city){
-                    res.status(400).json({message: 'You must provide a city for your location.'});
-                }
-                if(!req.body.state){
-                    res.status(400).json({message: 'You must provide a state for your location.'});
-                }
-                if(!req.body.zipcode){
-                    res.status(400).json({message: 'You must enter a zip code.'});
+                if(savedLocation){
+                    return res.status(200).json({message: 'Congratulations! New location created.', location: savedLocation});
                 }else{
-                    var zipStr = req.body.zipcode.toString();
-                    if(zipStr.length !== 5){
-                        res.status(400).json({messag: 'Invalid zipcode.'});
-                    }
+                    return res.status(500).json({message: 'Unable to create this location.'});
                 }
-                if(!req.body.phone){
-                    res.status(400).json({message: 'You must provide a primary phone number for this location.'});
-                }
-                let owners = [];
-                owners.push(userFound);
-                let newLocation = new Location({
-                    title: req.body.title,
-                    address: req.body.address,
-                    city: req.body.city,
-                    state: req.body.state,
-                    zipcode: req.body.zipcode,
-                    phone: req.body.phone,
-                    owners: owners
-                });
-                newLocation.save((err, savedLocation)=>{
-                    if(err){
-                        res.status(500).json({message: err.message});
-                    }
-                    if(savedLocation){
-                        res.status(200).json({message: 'Congratulations! New location created.', location: savedLocation});
-                    }else{
-                        res.status(500).json({message: 'Unable to create this location.'});
-                    }
-                });
-            }else{
-                userFound.userStatus = 'Owner';
-                userFound.save((err, updatedUser)=>{
-                    if(err){
-                        res.status(500).json('Unable to create a new location. Could not upgrade your status.');
-                    }else{
-                        //the user has been upgraded to an owner
-                        if(!req.body.title){
-                            res.status(400).json({message: 'You must give your location a name.'});
-                        }
-                        if(!req.body.address){
-                            res.status(400).json({message: 'You must enter a street address.'});
-                        }
-                        if(!req.body.city){
-                            res.status(400).json({message: 'You must provide a city for your location.'});
-                        }
-                        if(!req.body.state){
-                            res.status(400).json({message: 'You must provide a state for your location.'});
-                        }
-                        if(!req.body.zipcode){
-                            res.status(400).json({message: 'You must enter a zip code.'});
-                        }else{
-                            var zipStr = req.body.zipcode.toString();
-                            if(zipStr.length !== 5){
-                                res.status(400).json({messag: 'Invalid zipcode.'});
-                            }
-                        }
-                        if(!req.body.phone){
-                            res.status(400).json({message: 'You must provide a primary phone number for this location.'});
-                        }
-                        let owners = [];
-                        owners.push(updatedUser);
-                        let newLocation = new Location({
-                            title: req.body.title,
-                            address: req.body.address,
-                            city: req.body.city,
-                            state: req.body.state,
-                            zipcode: req.body.zipcode,
-                            phone: req.body.phone,
-                            owners: owners
-                        });
-                        newLocation.save((err, savedLocation)=>{
-                            if(err){
-                                res.status(500).json({message: err.message});
-                            }
-                            if(savedLocation){
-                                res.status(200).json({message: 'Congratulations! New location created.', location: savedLocation});
-                            }else{
-                                res.status(500).json({message: 'Unable to create this location.'});
-                            }
-                        });
-                    }
-                });
-            }
+            });
+        }else{
+            return res.status(404).json({message: 'Invalid state provided.'});
         }
-    }).catch(dbErr => {
-        res.status(500).json({message: 'Could not verify user at this time.'});
+    }).catch(err=>{
+        return res.status(500).json({message: 'Unable to create location at this time.'});
     });
 }
 //get locations owned by a specific user
@@ -245,5 +189,61 @@ exports.addLocationEmployee = (req, res)=>{
                 res.status(404).json({message: 'Unable to find a user with this username. If your employee does not have an account, ask them to make one.'});
             }
         });
+    }
+}
+exports.searchLocation = (req, res)=>{
+    if(!req.params.type){
+        res.status(400).json({message: 'You must specify the field with which you are searching against.'});
+    }
+    if(!req.params.searchVal){
+        res.status(400).json({message: 'You must specify the search value for your search query.'});
+    }
+    let searchVal = req.params.searchVal;
+    switch(req.params.type){
+        case 'title': 
+            Location.find({title: {$regex: searchVal, $options: 'i'}}).then(locationsFound=>{
+                if(locationsFound && locationsFound.length > 0){
+                    return res.status(200).json({location: locationsFound, message: 'Found what you were looking for.'});
+                }else{
+                    return res.status(404).json({message: 'Could not find a location matching those specifications. Sorry.'});
+                }
+            }).catch(err=>{
+                return res.status(500).json({message: 'Unable to search for location at this time'});
+            });
+            break;
+        case 'address':
+            Location.find({address: {$regex: searchVal, $options: 'i'}}).then(locationsFound=>{
+                if(locationsFound && locationsFound.length > 0){
+                    return res.status(200).json({location: locationsFound, message: 'Found what you were looking for.'});
+                }else{
+                    return res.status(404).json({message: 'Could not find a location matching those specifications. Sorry.'});
+                }
+            }).catch(err=>{
+                return res.status(500).json({message: 'Unable to search for location at this time'});
+            });
+            break;
+        case 'phone':
+            Location.find({phone: {$regex: searchVal, $options: 'i'}}).then(locationsFound=>{
+                if(locationsFound && locationsFound.length > 0){
+                    return res.status(200).json({location: locationsFound, message: 'Found what you were looking for.'});
+                }else{
+                    return res.status(404).json({message: 'Could not find a location matching those specifications. Sorry.'});
+                }
+            }).catch(err=>{
+                return res.status(500).json({message: 'Unable to search for location at this time'});
+            });
+            break;
+        case 'zipcode':
+            Location.find({zipcode: parseInt(searchVal)}).then(locationsFound=>{
+                if(locationsFound && locationsFound.length > 0){
+                    return res.status(200).json({location: locationsFound, message: 'Found what you were looking for.'});
+                }else{
+                    return res.status(404).json({message: 'Could not find a location matching those specifications. Sorry.'});
+                }
+            }).catch(err=>{
+                return res.status(500).json({message: 'Unable to search for location at this time'});
+            });
+            break;
+        default: return res.status(400).json({message: 'Invalid type specified for this search.'});
     }
 }

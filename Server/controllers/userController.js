@@ -129,3 +129,18 @@ exports.updateUserInfo = (req, res)=>{
         }
     });
 }
+exports.upgradeToOwnerStatus = (req, res, next)=>{
+    User.findOneAndUpdate({username: res.locals.username}, {$set:{
+        userStatus: 'Owner'
+    }}, {new: true}, (err, updatedUser)=>{
+        if(err){
+            res.status(400).json({message: 'Unable to create this location with you as the owner at this time.'});
+        }
+        if(updatedUser){
+            res.locals.user = updatedUser;
+            next();
+        }else{
+            res.status(404).json({message: 'Unable to create this location with you as owner because your account could not be found.'});
+        }
+    });
+}

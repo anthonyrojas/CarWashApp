@@ -35,7 +35,7 @@ const LocationSchema = new Schema({
         type: [Schema.Types.ObjectId],
         ref: 'User'
     },
-    stipeKey:{
+    stripeKey:{
         type: String
     }
 });
